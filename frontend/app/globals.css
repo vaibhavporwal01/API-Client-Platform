@@ -1,0 +1,222 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Postman-style Design Tokens ───────────────────────────────────────────── */
+:root {
+  --pm-bg-primary:    #2C2C2A;
+  --pm-bg-sidebar:    #1E1E1C;
+  --pm-bg-surface:    #232321;
+  --pm-bg-topbar:     #1A1A18;
+  --pm-bg-hover:      #2a2a28;
+  --pm-border:        #3d3d3a;
+  --pm-border-strong: #555550;
+  --pm-text-primary:  #E8E6DE;
+  --pm-text-secondary:#C2C0B6;
+  --pm-text-muted:    #888780;
+  --pm-accent-orange: #EF9F27;
+
+  /* Method colours */
+  --pm-method-get:    #49CC90;
+  --pm-method-post:   #61AFFE;
+  --pm-method-put:    #FCA130;
+  --pm-method-delete: #F93E3E;
+  --pm-method-patch:  #50E3C2;
+
+  /* Status colours */
+  --pm-status-2xx: #49CC90;
+  --pm-status-3xx: #FCA130;
+  --pm-status-4xx: #F93E3E;
+  --pm-status-5xx: #F93E3E;
+
+  /* Layout metrics */
+  --topbar-height:   48px;
+  --sidebar-width:   240px;
+  --tab-bar-height:  36px;
+  --scrollbar-width: 5px;
+  --radius-sm:       4px;
+  --radius-md:       6px;
+  --radius-lg:       10px;
+  --transition:      140ms ease;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--pm-bg-primary);
+  color: var(--pm-text-primary);
+  font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Custom Scrollbar ───────────────────────────────────────────────────────── */
+::-webkit-scrollbar              { width: var(--scrollbar-width); height: var(--scrollbar-width); }
+::-webkit-scrollbar-track        { background: transparent; }
+::-webkit-scrollbar-thumb        { background: var(--pm-border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover  { background: #6b6b66; }
+
+/* ─── Selection ──────────────────────────────────────────────────────────────── */
+::selection { background: rgba(239, 159, 39, 0.25); color: var(--pm-text-primary); }
+
+/* ─── Focus ──────────────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 1.5px solid rgba(239, 159, 39, 0.55);
+  outline-offset: 1px;
+  border-radius: var(--radius-sm);
+}
+
+/* ─── Animations ─────────────────────────────────────────────────────────────── */
+@keyframes fadeIn    { from { opacity: 0 }                              to { opacity: 1 } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-6px) } to { opacity: 1; transform: translateY(0) } }
+@keyframes slideUp   { from { opacity: 0; transform: translateY(6px)  } to { opacity: 1; transform: translateY(0) } }
+@keyframes spin      { to   { transform: rotate(360deg) } }
+
+.animate-fade-in    { animation: fadeIn    0.18s ease-out both; }
+.animate-slide-down { animation: slideDown 0.18s ease-out both; }
+.animate-slide-up   { animation: slideUp   0.18s ease-out both; }
+.animate-spin       { animation: spin       1s   linear infinite; }
+
+/* ─── Method Colour Utilities ────────────────────────────────────────────────── */
+.method-GET    { color: var(--pm-method-get);    }
+.method-POST   { color: var(--pm-method-post);   }
+.method-PUT    { color: var(--pm-method-put);    }
+.method-DELETE { color: var(--pm-method-delete); }
+.method-PATCH  { color: var(--pm-method-patch);  }
+.method-HEAD   { color: var(--pm-method-get);    }
+.method-OPTIONS{ color: var(--pm-text-muted);    }
+
+.method-bg-GET    { background: rgba(73, 204, 144, 0.12); color: var(--pm-method-get);    border-color: rgba(73, 204, 144, 0.25);  }
+.method-bg-POST   { background: rgba(97, 175, 254, 0.12); color: var(--pm-method-post);   border-color: rgba(97, 175, 254, 0.25);  }
+.method-bg-PUT    { background: rgba(252,161, 48,  0.12); color: var(--pm-method-put);    border-color: rgba(252,161, 48,  0.25);  }
+.method-bg-DELETE { background: rgba(249, 62, 62,  0.12); color: var(--pm-method-delete); border-color: rgba(249, 62, 62,  0.25);  }
+.method-bg-PATCH  { background: rgba(80, 227, 194, 0.12); color: var(--pm-method-patch);  border-color: rgba(80, 227, 194, 0.25);  }
+.method-bg-HEAD   { background: rgba(73, 204, 144, 0.12); color: var(--pm-method-get);    border-color: rgba(73, 204, 144, 0.25);  }
+.method-bg-OPTIONS{ background: rgba(136,135,128, 0.12);  color: var(--pm-text-muted);    border-color: rgba(136,135,128, 0.25);   }
+
+/* ─── Status Colour Utilities ────────────────────────────────────────────────── */
+.status-2xx { color: var(--pm-status-2xx); }
+.status-3xx { color: var(--pm-status-3xx); }
+.status-4xx { color: var(--pm-status-4xx); }
+.status-5xx { color: var(--pm-status-5xx); }
+
+/* ─── Surface / Layout Helpers ───────────────────────────────────────────────── */
+.pm-surface   { background: var(--pm-bg-surface);  border: 1px solid var(--pm-border); }
+.pm-sidebar   { background: var(--pm-bg-sidebar);  }
+.pm-topbar    { background: var(--pm-bg-topbar);   }
+.pm-input {
+  background: var(--pm-bg-surface);
+  border: 1px solid var(--pm-border);
+  color: var(--pm-text-primary);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  font-size: 13px;
+  transition: border-color var(--transition);
+}
+.pm-input:focus { border-color: var(--pm-border-strong); outline: none; }
+.pm-input::placeholder { color: var(--pm-text-muted); }
+
+/* ─── Button Variants ────────────────────────────────────────────────────────── */
+.pm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+  background: var(--pm-bg-hover);
+  color: var(--pm-text-secondary);
+}
+.pm-btn:hover                { background: var(--pm-border); color: var(--pm-text-primary); }
+.pm-btn-primary              { background: var(--pm-accent-orange); color: #1a1a18; border-color: transparent; font-weight: 600; }
+.pm-btn-primary:hover        { background: #f7aa3c; }
+.pm-btn-ghost                { background: transparent; border-color: transparent; }
+.pm-btn-ghost:hover          { background: var(--pm-bg-hover); }
+.pm-btn-danger:hover         { background: rgba(249,62,62,0.15); color: var(--pm-status-4xx); border-color: rgba(249,62,62,0.25); }
+
+/* ─── Tab Variants ───────────────────────────────────────────────────────────── */
+.pm-tab {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--pm-text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color var(--transition), border-color var(--transition);
+  white-space: nowrap;
+}
+.pm-tab:hover  { color: var(--pm-text-secondary); }
+.pm-tab.active { color: var(--pm-accent-orange); border-bottom-color: var(--pm-accent-orange); }
+
+/* ─── KV Table Utilities ─────────────────────────────────────────────────────── */
+.kv-row:hover .kv-delete-btn { opacity: 1; }
+.kv-delete-btn { opacity: 0; transition: opacity var(--transition); }
+
+/* ─── Code / Mono ────────────────────────────────────────────────────────────── */
+.code-block {
+  font-family: var(--font-mono), 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+/* ─── Resizable Panel Handle ─────────────────────────────────────────────────── */
+[data-panel-resize-handle-id] {
+  background: var(--pm-border) !important;
+  transition: background var(--transition);
+  position: relative;
+}
+[data-panel-resize-handle-id]:hover,
+[data-panel-resize-handle-id][data-resize-handle-active] {
+  background: var(--pm-accent-orange) !important;
+  opacity: 0.5;
+}
+
+/* ─── Modal Backdrop ─────────────────────────────────────────────────────────── */
+.pm-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(3px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pm-modal {
+  background: var(--pm-bg-surface);
+  border: 1px solid var(--pm-border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+}
+
+/* ─── Toast Override ─────────────────────────────────────────────────────────── */
+.pm-toast {
+  background: var(--pm-bg-surface) !important;
+  color: var(--pm-text-primary) !important;
+  border: 1px solid var(--pm-border-strong) !important;
+  border-radius: var(--radius-md) !important;
+  font-size: 13px !important;
+  font-family: var(--font-inter), 'Inter', system-ui, sans-serif !important;
+}
+
+/* ─── Dividers ───────────────────────────────────────────────────────────────── */
+.pm-divider-h { width: 100%;  height: 1px; background: var(--pm-border); }
+.pm-divider-v { height: 100%; width:  1px; background: var(--pm-border); }
+
+/* ─── Loading Skeleton ───────────────────────────────────────────────────────── */
+@keyframes shimmer { from { background-position: -400px 0 } to { background-position: 400px 0 } }
+.pm-skeleton {
+  background: linear-gradient(90deg, var(--pm-bg-hover) 25%, var(--pm-border) 50%, var(--pm-bg-hover) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
