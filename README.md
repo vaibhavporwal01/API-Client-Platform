@@ -2,134 +2,108 @@
 
 A modern, fast, and beautiful API Client Platform (a lightweight alternative to Postman) designed for testing HTTP requests, managing workspace collections, and configuring environment variables.
 
-Built with a high-performance **FastAPI (Python) backend** and a reactive **Next.js (React/TypeScript) frontend**.
+This project is built with a high-performance **FastAPI (Python) backend** and a reactive **Next.js (React/TypeScript) frontend**. It is designed to be fully deployable to modern cloud infrastructure.
 
 ---
 
-## 🛠️ Architecture
+## 🛠️ Tech Stack & Services
 
-*   **Frontend**: Next.js 14 (App Router), Tailwind CSS (for modern aesthetics), Zustand (for state management).
-*   **Backend**: FastAPI, SQLAlchemy (ORM), SQLite (database), Pydantic v2 (validation & serialization).
+### Frontend
+* **Framework:** Next.js 14 (App Router)
+* **Language:** TypeScript
+* **Styling:** Tailwind CSS (for modern aesthetics)
+* **State Management:** Zustand (for reactive, global state)
+* **Deployment:** Hosted on **Vercel**
+
+### Backend (The Heavy Lifter)
+* **Framework:** FastAPI (High-performance Python web framework)
+* **Language:** Python 3.10+
+* **ORM:** SQLAlchemy (for database interactions)
+* **Data Validation:** Pydantic v2 (serialization and schema validation)
+* **Database:** **Neon Serverless PostgreSQL** (Cloud DB)
+* **Deployment:** Hosted on **Render.com**
 
 ---
 
-## 🚀 Local Quickstart
+## 📂 Project Structure
+
+The repository is structured as a monorepo containing both the frontend and backend applications:
+
+```text
+APIClientPlatform/
+├── frontend/                 # Next.js Application
+│   ├── app/                  # Next.js App Router pages
+│   ├── components/           # Reusable UI components
+│   ├── lib/                  # Utility functions
+│   ├── store/                # Zustand global state stores
+│   ├── public/               # Static assets
+│   └── package.json          # Frontend dependencies
+│
+└── backend/                  # FastAPI Application
+    ├── main.py               # Application entry point & FastAPI instance
+    ├── database.py           # Database connection & SQLAlchemy setup
+    ├── models.py             # SQLAlchemy ORM models (Database Tables)
+    ├── schemas.py            # Pydantic models (Data validation)
+    ├── routers/              # API Endpoints (Collections, Requests, etc.)
+    ├── services/             # Core business logic
+    ├── seed.py               # Database initialization & dummy data
+    └── requirements.txt      # Python dependencies
+```
+
+---
+
+## 🧠 Backend Details
+
+The backend is designed to handle the heavy lifting for the platform:
+- **Relational Data Management:** Uses SQLAlchemy `models.py` to define tables for `Collections`, `Requests`, and `Environments`, establishing complex foreign key relationships between them.
+- **Data Validation:** Before any data touches the database, `schemas.py` validates it using Pydantic, ensuring strict type safety and data integrity.
+- **Modular Routing:** Endpoints are cleanly separated in the `routers/` directory, keeping `main.py` lightweight and highly maintainable.
+- **Auto-Seeding:** Upon startup, the backend automatically provisions tables and seeds initial data (via `seed.py`) to ensure the platform is immediately usable for testing.
+
+---
+
+## ☁️ Live Deployment
+
+This platform is currently deployed and live!
+
+1. **Frontend (Vercel)**: Automatically builds from the `frontend` directory on GitHub pushes. Environment variables (`NEXT_PUBLIC_API_URL`) are configured to point to the Render backend.
+2. **Backend (Render.com)**: Automatically deploys the FastAPI application from the `backend` directory.
+3. **Database (Neon)**: A serverless PostgreSQL instance connected to the Render backend via the `DATABASE_URL` environment variable.
+
+---
+
+## 🚀 Local Development Quickstart
 
 ### 1. Run the Backend
 Ensure you have Python 3.10+ installed.
 
-1.  Navigate to the backend directory:
-    ```bash
-    cd backend
-    ```
-2.  Create a virtual environment:
-    ```bash
-    python -m venv venv
-    ```
-3.  Activate the virtual environment:
-    *   **Windows (PowerShell)**: `.\venv\Scripts\Activate.ps1`
-    *   **Mac/Linux**: `source venv/bin/activate`
-4.  Install the required dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
-5.  Start the FastAPI development server:
-    ```bash
-    uvicorn main:app --reload --port 8000
-    ```
-    The backend will run at `http://127.0.0.1:8000`.
+```bash
+cd backend
+python -m venv venv
+# Activate virtual environment
+# Windows: .\venv\Scripts\Activate.ps1
+# Mac/Linux: source venv/bin/activate
 
----
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+```
+*The backend will run at `http://127.0.0.1:8000`.*
 
 ### 2. Run the Frontend
 Ensure you have Node.js 18+ installed.
 
-1.  Navigate to the frontend directory:
-    ```bash
-    cd ../frontend
-    ```
-2.  Install dependencies:
-    ```bash
-    npm install
-    ```
-3.  Start the Next.js development server:
-    ```bash
-    npm run dev
-    ```
-    Open **[http://localhost:3000/workspace](http://localhost:3000/workspace)** in your browser.
+```bash
+cd frontend
+npm install
+npm run dev
+```
+*Open **[http://localhost:3000/workspace](http://localhost:3000/workspace)** in your browser.*
 
 ---
 
-## 🧪 Testing Your Own API (Built-in Test Routes)
+## 🧪 Built-in API Tests
 
 The backend comes pre-configured with two mock API endpoints to test requests directly inside your workspace:
 
-### 1. GET Request
-*   **URL**: `http://127.0.0.1:8000/api/test-get?name=User`
-*   **Response**:
-    ```json
-    {
-      "message": "Hello, User! Your API Client Platform is working!"
-    }
-    ```
-
-### 2. POST Request
-*   **URL**: `http://127.0.0.1:8000/api/test-post`
-*   **Body (JSON)**:
-    ```json
-    {
-      "key": "value"
-    }
-    ```
-*   **Response**:
-    ```json
-    {
-      "received_payload": { "key": "value" },
-      "status": "success"
-    }
-    ```
-
----
-
-## 📦 Setting Up Git & GitHub
-
-Since this project is not yet under version control, follow these steps to upload it to your GitHub profile:
-
-1.  Open your terminal at the project's root folder (`APIClientPlatform`).
-2.  Initialize a local Git repository:
-    ```bash
-    git init
-    ```
-3.  Add all files to the staging area:
-    ```bash
-    git add .
-    ```
-    *(Note: Folder exclusions like `venv/`, `node_modules/`, and `.next/` are automatically ignored thanks to the `.gitignore` file).*
-4.  Commit the files:
-    ```bash
-    git commit -m "initial commit: API Client Platform working build"
-    ```
-5.  Create a new, empty repository on [GitHub](https://github.com/new). Name it `APIClientPlatform`. Do **NOT** initialize it with a README, gitignore, or license.
-6.  Copy the remote repository URL, then run:
-    ```bash
-    git remote add origin <your-copied-repo-url>
-    git branch -M main
-    git push -u origin main
-    ```
-
----
-
-## ☁️ Deployment Guide
-
-### Frontend Deployment (Vercel)
-Vercel is the recommended host for Next.js.
-1.  Import your GitHub repository into [Vercel](https://vercel.com).
-2.  Configure the build settings:
-    *   **Root Directory**: `frontend`
-    *   **Framework Preset**: Next.js
-    *   **Environment Variable**: Add `NEXT_PUBLIC_API_URL` set to your live backend domain (e.g., `https://api.yourdomain.com`).
-3.  Click **Deploy**.
-
-### Backend Deployment (Render / Railway / VPS)
-*   **For VPS (SQLite)**: Deploy using Docker and mount a persistent volume directory to prevent SQLite files from being cleared on restarts.
-*   **For PaaS (Render / Railway)**: Connect a PostgreSQL database service and set the connection string environment variable to `DATABASE_URL` (SQLAlchemy will detect this and configure connection details automatically).
+- **GET Request:** `http://127.0.0.1:8000/api/test-get?name=User`
+- **POST Request:** `http://127.0.0.1:8000/api/test-post`
